@@ -10,15 +10,16 @@ CORS(app)
 socketio = SocketIO(app)
 
 
-@app.route('/chat')
-def chat_box():
-    return render_template('chat.html', title='Chat', css='/static/styles/chat.css', script='/static/scripts/chat.js', fullName='Gabbar', avatar='/static/images/Icon.jpeg')
+@app.route('/')
+def index():
+    return render_template('index.html', title='Chat')
 
 
 @app.route('/chat/get/previous/<int:id>', methods=['GET', 'POST'])
 def chat_previous(id: int) -> list:
     # Sends [{'user_id': , 'message': ,  'date': }, ]
-    return jsonify([id])
+
+    return jsonify(id)
 
 
 @app.route('/chat/put/<int:id>', methods=['POST'])

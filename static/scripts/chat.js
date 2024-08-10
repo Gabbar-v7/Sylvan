@@ -1,33 +1,43 @@
-// urls
+// URLS
 const route = window.location.origin;
 const load = route+'/chat/get/previous/';
 const send = route+'/chat/put/';
 
+const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
 const user_id = localStorage.getItem("user_id");
-const chat_id = localStorage.getItem("chat_id");
+var chat_id = 1;
+var receiverName = 'Gabber';
+var receiverAvatar = '/static/images/Icon.jpeg';
 var loaded = false;
-let previousMessages;
+let previousMessages; 
+
 
 var $messages = $('.messages-content'),
-    d, h, m,
-    i = 0;
+    d, m, i = 0;
 
 $(window).on('load', async function() {
   $messages.mCustomScrollbar();
   console.log('Website loaded');
+  setReceiver();
   await loadPrevious();
   initiate();
   loaded = true;
 });
 
+function setReceiver(){
+  document.getElementById('receiverName').innerHTML =  receiverName;
+  document.getElementById('avatar-icon').src = receiverAvatar;
+}
+
 function initiate(){
-  setTimeout( function() {
+  if(previousMessages){setTimeout( function() {
   previousMessages.forEach(loadMessages);
-  }, 100);
+  }, 100);}
 }
 
 function loadMessages(value, index, array){
-  if(value['user_id'] == user_id) senderMessage(msg=value['message'], date=value['date']);
+  if(value['user_id'] == user_id && value['user_id']!=null) senderMessage(msg=value['message'], date=value['date']);
   else receiverMessage(msg = value['message'], date=value['date']);
 }
 
@@ -39,10 +49,10 @@ function updateScrollbar() {
 }
 
 function setDate(date){
-  d = new Date( date? date : new Date());
-  if (m != d.getMinutes()) {
-    m = d.getMinutes();
-    $('<div class="timestamp">' + d.getHours() + ':' + m + '</div>').appendTo($('.message:last'));
+  date = new Date( date? date : new Date());
+  if (date.getDate() != d && date.getMonth() != m) {
+    d = date.getDate(); m = date.getMonth();
+    $('<div class="timestamp">' + months[date.getMonth()] + ' ' + date.getDate() + '</div>').appendTo($('#mCSB_1_container'));
   }
 }
 
@@ -71,11 +81,28 @@ async function  senderMessage(msg = $('.message-input').val(), date='') {
     console.error('Error sending message:', error);
     return false;
   });
-
-  $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
   setDate(date);
+  $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
   $('.message-input').val(null);
   updateScrollbar();
+}
+
+$('.chat').click(function() {
+ document.getElementById('focus').focus();
+});
+
+$('.chat-close').click(
+  close
+)
+
+function close(){
+  var chat = document.getElementById('chat');
+  chat.style.height = 0;
+  chat.style.transform = 'translateY(70px)';
+
+  var chat_background = document.getElementById('chat-background');
+  chat_background.style.height = 0;
+  chat_background.style.transform = 'translateY(70px)';
 }
 
 $('.message-submit').click(function() {
@@ -123,9 +150,9 @@ async function loadPrevious(){
   }
 
    setTimeout( function () {
+    setDate(date);
      $('.message.loading').remove();
      $('<div class="message new"><figure class="avatar"><img src=' + image_url + ' /></figure>' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
-    setDate(date);
     updateScrollbar();
   }, 1000);
 }
