@@ -1,0 +1,48 @@
+JS localStorage Keys:
+user_id int
+
+localStorage
+localStorage.setItem("mytime", Date.now());
+localStorage.getItem("user_id");
+localStorage.removeItem("mytime");
+
+Get urls items: window.location
+host // "ui.dev"
+hostname // "ui"
+href // "https://ui.dev/get-current-url-javascript/?comments=false"
+origin // "https://ui.dev"
+pathname // "/get-current-url-javascript/""
+port // ""
+protocol // "https:"
+search // "?comments=false"
+
+Iteration
+iterable.forEach(myFunction);
+function myFunction(value, index, array) {
+  txt += value +' ' + index + ' ' + array + ; 
+}
+
+Js fetch
+var options = {
+    method:'POST',
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(msg)
+  };
+  // Send messages
+  fetch(send, options)
+  .then(async response => {
+    if (response.ok) {
+      let res = await response.json();
+      console.log(res);
+      console.log('Website loaded successfully');
+    } else {
+      console.log(`Error loading website: ${response.status}`);
+      return false;
+    }
+  })
+  .catch(error => {
+    console.error('Error loading website:', error);
+    return false;
+  });
