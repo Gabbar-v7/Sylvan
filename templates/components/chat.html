@@ -1,31 +1,35 @@
-{% extends 'components/base.html' %}
-
-{% block head %} 
-{{ super() }}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+{% extends 'components/base.html' %} {% block head %} {{ super() }}
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css"
+/>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
-<link rel="stylesheet" href="/static/styles/chat.css">
-{% endblock %} 
-
-{% block body %}  
-{{ super() }}
-<div id = 'chat-background' class = 'chat-background'>
+<link rel="stylesheet" href="/static/styles/chat.css" />
+{% endblock %} {% block body %} {{ super() }}
+<div id="chat-background" class="chat-background">
   <div id="chat" class="chat">
     <div class="chat-title">
       <figure class="avatar">
-        <img id = 'avatar-icon' src = '' /></figure>
-      <h1 id = 'receiverName'></h1>
+        <img id="avatar-icon" src="" />
+      </figure>
+      <h1 id="receiverName"></h1>
       <button type="button" class="chat-close">x</button>
     </div>
-      <div class="messages">
-        <div class="messages-content"></div>
-      </div>
-      <div class="message-box">
-        <textarea type="text" id="focus" class="message-input" placeholder="Type message..."></textarea>
-        <button type="submit" class="message-submit">Send</button>
-      </div>
+    <div class="messages">
+      <div class="messages-content"></div>
+    </div>
+    <div class="message-box">
+      <textarea
+        type="text"
+        id="focus"
+        class="message-input"
+        placeholder="Type message..."
+      ></textarea>
+      <button type="submit" class="message-submit">Send</button>
+    </div>
   </div>
 </div>
-{% endblock %} 
-{% block script %} {{ super() }}<script src="/static/scripts/chat.js"></script> {% endblock %} 
+{% endblock %} {% block script %} {{ super() }}
+<script src="/static/scripts/chat.js"></script>
+{% endblock %}
