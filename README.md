@@ -103,7 +103,7 @@ Sylvan/
 │   │
 │   ├── security/                # Security measures
 │   │   ├── oneway.py            # One-way security (e.g., hashing)
-│   │   └── two.py               # Two-way security (e.g., encryption)
+│   │   └── twoway.py               # Two-way security (e.g., encryption)
 │   │
 │   └── tools/                   # Utility scripts
 │   
