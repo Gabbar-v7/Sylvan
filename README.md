@@ -94,26 +94,26 @@ Sylvan/
 │   │   │   ├── pages/           # Protected pages (login required)
 │   │   │   ├── session/         # Session management (login/signup)
 │   │   │   ├── base.html        # Base layout template
-│   │   │   ├── index.html       # Home page
+│   │   │   └── index.html       # Home page
 │   │   ├── __init__.py          # App initialization and blueprint registration
 │   │   ├── errors.py            # Error handling routes
 │   │   ├── index.py             # Home page logic
 │   │   ├── page.py              # Other page routes
-│   │   ├── session.py           # Session management logic
+│   │   └── session.py           # Session management logic
 │   │
 │   ├── security/                # Security measures
 │   │   ├── oneway.py            # One-way security (e.g., hashing)
-│   │   ├── two.py               # Two-way security (e.g., encryption)
+│   │   └── two.py               # Two-way security (e.g., encryption)
 │   │
-│   ├── tools/                   # Utility scripts
-│   │
+│   └── tools/                   # Utility scripts
+│   
 ├── .gitignore                   # Git ignore file
 ├── DOCUMENTATION.md             # Complete Documentation
 ├── LICENSE.md                   # License information
 ├── README.md                    # Project README
 ├── keys.py                      # API keys or sensitive data (to be configured)
 ├── main.py                      # Main entry point to run the app
-├── requirements.txt             # Project dependencies
+└── requirements.txt             # Project dependencies
 ```
 
 ### For more details checkout [DOCUMENTATION.md](DOCUMENTATION.md)
