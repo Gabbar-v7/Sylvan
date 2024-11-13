@@ -1,0 +1,8 @@
+flask 
+flask-cors 
+requests
+flask-wtf
+qrcode
+pillow
+sqlalchemy
+cryptography
