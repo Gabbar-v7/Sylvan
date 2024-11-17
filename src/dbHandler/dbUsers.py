@@ -1,5 +1,6 @@
 from sqlalchemy import DateTime, Integer, String, func
 from sqlalchemy.orm import Mapped, declarative_base, mapped_column
+from src.security.oneway import hash
 
 # Initialize Base
 UserBase = declarative_base()
@@ -30,7 +31,7 @@ class User(UserBase):
         self.lastName = lastName
         self.email = email
         self.phone = phone
-        self.password = password
+        self.password = hash(password)
 
     def __repr__(self):
         return f"User(id={self.id!r}, firstName={self.firstName!r}, lastName={self.lastName!r})"

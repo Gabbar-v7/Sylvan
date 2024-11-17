@@ -1,13 +1,6 @@
-from flask import (
-    Blueprint,
-    flash,
-    redirect,
-    render_template,
-    request,
-    session,
-    url_for,
-)
+from flask import Blueprint, flash, redirect, render_template, request, session, url_for
 from flask_cors import CORS, cross_origin
+
 from keys import FLASK_SESSION_KEY
 from src.dbHandler import User, dbSession
 from src.security.oneway import hash
@@ -88,7 +81,7 @@ def sign_up():
             return redirect(url_for("session.login"))
 
         try:
-            user = User(firstName, lastName, email, phone, hash(password))
+            user = User(firstName, lastName, email, phone, password)
             dbsession.add(user)
             dbsession.commit()
             flash("Successfully registered", "success")
