@@ -1,12 +1,17 @@
 from sqlalchemy import DateTime, Integer, String, func
-from sqlalchemy.orm import Mapped, declarative_base, mapped_column
+from sqlalchemy.orm import Mapped, DeclarativeBase, mapped_column
 from src.security.oneway import hash
 
+
 # Initialize Base
-UserBase = declarative_base()
+class Base(DeclarativeBase):
+    def as_dict(self):
+        return {
+            column.name: getattr(self, column.name) for column in self.__table__.columns
+        }
 
 
-class User(UserBase):
+class User(Base):
     __tablename__ = "users"
 
     id: Mapped[int] = mapped_column(
@@ -34,9 +39,4 @@ class User(UserBase):
         self.password = hash(password)
 
     def __repr__(self):
-        return f"User(id={self.id!r}, firstName={self.firstName!r}, lastName={self.lastName!r})"
-
-    def as_dict(self):
-        return {
-            column.name: getattr(self, column.name) for column in self.__table__.columns
-        }
+        return f"User(id={self.id!r}, firstName={self.firstName!r}, lastName={self.lastName!r}, email={self.email!r}, phone={self.phone!r}, password={self.password!r})"
