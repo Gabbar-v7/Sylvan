@@ -13,6 +13,6 @@ database.db
 keys.py
 makefile
 Makefile
-
+.vscode
 
 # Testing
