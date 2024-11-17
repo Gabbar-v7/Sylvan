@@ -80,7 +80,7 @@ Sylvan/
 ├── src/
 │   ├── dbHandler/               # Database handler and ORM models
 │   │   ├── __init__.py          # Initializes DB and session
-│   │   └── dbUser.py            # User ORM model
+│   │   └── dbTables.py            # User ORM model
 │   │
 │   ├── flasky/                  # Flask app components
 │   │   ├── static/              # Static files (CSS, JS, images, etc.)
