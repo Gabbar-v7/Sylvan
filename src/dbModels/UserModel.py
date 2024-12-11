@@ -2,7 +2,7 @@ from sqlalchemy import DateTime, Integer, String, func
 from sqlalchemy.orm import Mapped, mapped_column
 
 from src.dbModels.BaseModel import Base
-from src.security.oneway import hash
+from src.security.oneway import generate_secure_hash
 
 
 class User(Base):
@@ -30,7 +30,7 @@ class User(Base):
         self.lastName = lastName
         self.email = email
         self.phone = phone
-        self.password = hash(password)
+        self.password = generate_secure_hash(password)
 
     # Below properties are requeired for flask-login to validate and can be adjusted as needed
     @property

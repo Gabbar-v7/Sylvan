@@ -10,7 +10,7 @@ from flask import (
 from flask_login import login_required, login_user, logout_user, user_logged_in
 from keys import FLASK_SESSION_KEY
 from src.dbModels import User, dbSession
-from src.security.oneway import hash
+from src.security.oneway import generate_secure_hash
 
 app_session = Blueprint("session", __name__, url_prefix="/session")
 
@@ -82,7 +82,7 @@ def sign_up():
                 flash(error, "info")
             return redirect(url_for("session.sign_up"))
 
-        password_hashed = hash(password)
+        password_hashed = generate_secure_hash(password)
         with dbSession() as dbsession:
             existing_user = (
                 dbsession.query(User)
