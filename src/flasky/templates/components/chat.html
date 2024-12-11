@@ -1,0 +1,617 @@
+<link rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.min.css">
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script
+    src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+<style>
+    /*-------------------- Mixins --------------------*/
+    /*-------------------- Body --------------------*/
+    *,
+    *::before,
+    *::after {
+        box-sizing: border-box;
+    }
+
+    html,
+    body {
+        height: 100%;
+    }
+
+    /*-------------------- Chat --------------------*/
+    .chat-background {
+        position: fixed;
+        bottom: 60px;
+        right: 40px;
+        display: inline-block;
+        height: 600px;
+        background: linear-gradient(135deg, #044f48, #2a7561);
+        border-radius: 20px;
+        background-size: cover;
+        font-family: 'Open Sans', sans-serif;
+        font-size: 12px;
+        line-height: 1.3;
+        transform: translateY(0);
+        transition: .5s ease;
+    }
+
+    .chat {
+        width: 300px;
+        height: 600px;
+        z-index: 2;
+        overflow: hidden;
+        box-shadow: 0 5px 30px rgba(0, 0, 0, .2);
+        background: rgba(0, 0, 0, .5);
+        border-radius: 20px;
+        display: flex;
+        justify-content: space-between;
+        flex-direction: column;
+        transform: translateY(0);
+        transition: .5s ease;
+    }
+
+    /*-------------------- Chat Title --------------------*/
+    .chat-title {
+        flex: 0 1 45px;
+        position: relative;
+        z-index: 2;
+        background: rgba(0, 0, 0, 0.2);
+        color: #fff;
+        text-transform: uppercase;
+        text-align: left;
+        padding: 10px 10px 10px 50px;
+    }
+
+    .chat-title h1 {
+        font-weight: normal;
+        font-size: 16px;
+        margin: 0;
+        padding: 2px 0 2px 0;
+    }
+
+    .chat-title .avatar {
+        position: absolute;
+        z-index: 1;
+        top: 8px;
+        left: 9px;
+        border-radius: 30px;
+        width: 30px;
+        height: 30px;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        border: 2px solid rgba(255, 255, 255, 0.24);
+    }
+
+    .chat-title .avatar img {
+        width: 100%;
+        height: auto;
+    }
+
+    .chat-title .chat-close {
+        position: absolute;
+        top: 0;
+        right: 0;
+        z-index: 1;
+        font-size: 28px;
+        font-weight: bold;
+        border-top-right-radius: 20px;
+        height: 100%;
+        width: 45px;
+    }
+
+    /*-------------------- Messages --------------------*/
+    .messages {
+        flex: 1 1 auto;
+        color: white;
+        overflow: hidden;
+        position: relative;
+        width: 100%;
+    }
+
+    .messages .messages-content {
+        position: absolute;
+        top: 0;
+        left: 0;
+        height: 101%;
+        width: 100%;
+    }
+
+    .messages .message {
+        clear: both;
+        float: left;
+        padding: 6px 10px 7px;
+        border-radius: 10px 10px 10px 0;
+        background: rgba(0, 0, 0, .3);
+        margin: 8px 0;
+        font-size: 16px;
+        line-height: 1.4;
+        margin-left: 35px;
+        position: relative;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, .2);
+    }
+
+    .messages .message {
+        display: flex;
+        align-self: center;
+    }
+
+    #mCSB_1_container .timestamp {
+        font-size: 18px;
+        text-align: center;
+        margin: 10px 0 5px 0;
+    }
+
+    .messages .message::before {
+        content: '';
+        position: absolute;
+        bottom: -6px;
+        border-top: 6px solid rgba(0, 0, 0, .3);
+        left: 0;
+        border-right: 7px solid transparent;
+    }
+
+    .messages .message .avatar {
+        position: absolute;
+        z-index: 1;
+        bottom: -15px;
+        left: -35px;
+        border-radius: 30px;
+        width: 30px;
+        height: 30px;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        border: 2px solid rgba(255, 255, 255, 0.24);
+    }
+
+    .messages .message .avatar img {
+        width: 100%;
+        height: auto;
+    }
+
+    .messages .message.message-personal {
+        float: right;
+        color: #fff;
+        text-align: right;
+        background: linear-gradient(120deg, #248a52, #257287);
+        border-radius: 10px 10px 0 10px;
+    }
+
+    .messages .message.message-personal::before {
+        left: auto;
+        right: 0;
+        border-right: none;
+        border-left: 5px solid transparent;
+        border-top: 4px solid #257287;
+        bottom: -4px;
+    }
+
+    .messages .message:last-child {
+        margin-bottom: 30px;
+    }
+
+    .messages .message.new {
+        transform: scale(0);
+        transform-origin: 0 0;
+        animation: bounce 500ms linear both;
+    }
+
+    .messages .message.loading::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        content: '';
+        display: block;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .5);
+        z-index: 2;
+        margin-top: 4px;
+        animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+        border: none;
+        animation-delay: 0.15s;
+    }
+
+    .messages .message.loading span {
+        display: block;
+        font-size: 0;
+        width: 20px;
+        height: 10px;
+        position: relative;
+    }
+
+    .messages .message.loading span::before {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        content: '';
+        display: block;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .5);
+        z-index: 2;
+        margin-top: 4px;
+        animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+        margin-left: -7px;
+    }
+
+    .messages .message.loading span::after {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        content: '';
+        display: block;
+        width: 3px;
+        height: 3px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, .5);
+        z-index: 2;
+        margin-top: 4px;
+        animation: ball 0.45s cubic-bezier(0, 0, 0.15, 1) alternate infinite;
+        margin-left: 7px;
+        animation-delay: 0.3s;
+    }
+
+    /*-------------------- Message Box --------------------*/
+    .message-box {
+        flex: 0 1 40px;
+        width: 100%;
+        background: rgba(0, 0, 0, 0.3);
+        padding: 10px;
+        position: relative;
+    }
+
+    .message-box .message-input {
+        background: none;
+        border: none;
+        outline: none !important;
+        resize: none;
+        color: rgba(255, 255, 255, .7);
+        font-size: 16px;
+        height: 27px;
+        margin: 0;
+        padding-right: 20px;
+        width: 265px;
+    }
+
+    .message-box textarea:focus:-webkit-placeholder {
+        color: transparent;
+    }
+
+    .message-box .message-submit {
+        position: absolute;
+        z-index: 1;
+        top: 9px;
+        right: 10px;
+        color: #fff;
+        border: none;
+        background: #248a52;
+        font-size: 14px;
+        text-transform: uppercase;
+        line-height: 1;
+        padding: 6px 10px;
+        border-radius: 10px;
+        outline: none !important;
+        transition: background 0.2s ease;
+    }
+
+    .message-box .message-submit:hover {
+        background: #1d7745;
+    }
+
+    /*-------------------- Custom Srollbar --------------------*/
+    .mCSB_scrollTools {
+        margin: 1px -3px 1px 0;
+        opacity: 0;
+    }
+
+    .mCSB_inside>.mCSB_container {
+        margin-right: 0px;
+        padding: 0 10px;
+    }
+
+    .mCSB_scrollTools .mCSB_dragger .mCSB_dragger_bar {
+        background-color: rgba(0, 0, 0, 0.5) !important;
+    }
+
+    /*-------------------- Bounce --------------------*/
+    @keyframes bounce {
+        0% {
+            transform: matrix3d(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        4.7% {
+            transform: matrix3d(0.45, 0, 0, 0, 0, 0.45, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        9.41% {
+            transform: matrix3d(0.883, 0, 0, 0, 0, 0.883, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        14.11% {
+            transform: matrix3d(1.141, 0, 0, 0, 0, 1.141, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        18.72% {
+            transform: matrix3d(1.212, 0, 0, 0, 0, 1.212, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        24.32% {
+            transform: matrix3d(1.151, 0, 0, 0, 0, 1.151, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        29.93% {
+            transform: matrix3d(1.048, 0, 0, 0, 0, 1.048, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        35.54% {
+            transform: matrix3d(0.979, 0, 0, 0, 0, 0.979, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        41.04% {
+            transform: matrix3d(0.961, 0, 0, 0, 0, 0.961, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        52.15% {
+            transform: matrix3d(0.991, 0, 0, 0, 0, 0.991, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        63.26% {
+            transform: matrix3d(1.007, 0, 0, 0, 0, 1.007, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        85.49% {
+            transform: matrix3d(0.999, 0, 0, 0, 0, 0.999, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+
+        100% {
+            transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1);
+        }
+    }
+
+    @keyframes ball {
+        from {
+            transform: translateY(0) scaleY(0.8);
+        }
+
+        to {
+            transform: translateY(-10px);
+        }
+    }
+
+    @media (max-height: 700px) {
+
+        .chat-background,
+        .chat {
+            height: 100%;
+            border-radius: 20px 0 0 20px;
+        }
+
+        .chat-background {
+            right: 0;
+            bottom: 0;
+        }
+
+        .chat-title .chat-close {
+            border-radius: 0;
+        }
+    }
+
+    @media (max-width: 450px) {
+
+        .chat-background,
+        .chat {
+            width: 100%;
+            height: 100%;
+            border-radius: 0;
+        }
+
+        .chat-background {
+            right: 0;
+            bottom: 0;
+        }
+
+        .chat-title .chat-close {
+            border-radius: 0;
+        }
+
+        .message-box .message-input {
+            height: 40px;
+            width: calc(100% - 70px);
+        }
+
+        .message-box .message-submit {
+            width: 70px;
+            font-size: 14px;
+        }
+    }
+</style>
+
+<div id='chat-background' class='chat-background'>
+    <div id="chat" class="chat">
+        <div class="chat-title">
+            <figure class="avatar">
+                <img id='avatar-icon' src='' />
+            </figure>
+            <h1 id='receiverName'></h1>
+            <button type="button" class="chat-close">x</button>
+        </div>
+        <div class="messages">
+            <div class="messages-content"></div>
+        </div>
+        <div class="message-box">
+            <textarea type="text" id="focus" class="message-input" placeholder="Type message..."></textarea>
+            <button type="submit" class="message-submit">Send</button>
+        </div>
+    </div>
+</div>
+
+<button onclick="openChat()">Open Chat</button>
+
+<script>
+    // URLS
+    const route = window.location.origin;
+    const load = route + '/chat/get/previous/';
+    const send = route + '/chat/put/';
+
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+    const user_id = localStorage.getItem("user_id");
+    var chat_id = 1;
+    var receiverName = 'Gabber';
+    var receiverAvatar = '/static/images/Icon.jpeg';
+    var loaded = false;
+    let previousMessages;
+
+
+    var $messages = $('.messages-content'),
+        d, m, i = 0;
+
+    $(window).on('load', async function () {
+        $messages.mCustomScrollbar();
+        console.log('Website loaded');
+        setReceiver();
+        await loadPrevious();
+        initiate();
+        loaded = true;
+    });
+
+    function setReceiver() {
+        document.getElementById('receiverName').innerHTML = receiverName;
+        document.getElementById('avatar-icon').src = receiverAvatar;
+    }
+
+    function initiate() {
+        if (previousMessages) {
+            setTimeout(function () {
+                previousMessages.forEach(loadMessages);
+            }, 100);
+        }
+    }
+
+    function loadMessages(value, index, array) {
+        if (value['user_id'] == user_id && value['user_id'] != null) senderMessage(msg = value['message'], date = value['date']);
+        else receiverMessage(msg = value['message'], date = value['date']);
+    }
+
+    function updateScrollbar() {
+        $messages.mCustomScrollbar("update").mCustomScrollbar('scrollTo', 'bottom', {
+            scrollInertia: 10,
+            timeout: 0
+        });
+    }
+
+    function setDate(date) {
+        date = new Date(date ? date : new Date());
+        if (date.getDate() != d && date.getMonth() != m) {
+            d = date.getDate(); m = date.getMonth();
+            $('<div class="timestamp">' + months[date.getMonth()] + ' ' + date.getDate() + '</div>').appendTo($('#mCSB_1_container'));
+        }
+    }
+
+    async function senderMessage(msg = $('.message-input').val(), date = '') {
+        if ($.trim(msg) == '' || !loaded) {
+            return false;
+        }
+
+        var options = {
+            method: 'POST',
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(msg)
+        };
+        fetch(send + user_id, options)
+            .then(async response => {
+                if (response.ok) {
+                    console.log('Message sent successfully');
+                } else {
+                    console.log(`Error sending message: ${response.status}`);
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.error('Error sending message:', error);
+                return false;
+            });
+        setDate(date);
+        $('<div class="message message-personal">' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
+        $('.message-input').val(null);
+        updateScrollbar();
+    }
+
+    $('.chat').click(function () {
+        document.getElementById('focus').focus();
+    });
+
+    $('.chat-close').click(
+        close
+    )
+
+    function close() {
+        var chat = document.getElementById('chat');
+        chat.style.height = 0;
+        chat.style.transform = 'translateY(70px)';
+
+        var chat_background = document.getElementById('chat-background');
+        chat_background.style.height = 0;
+        chat_background.style.transform = 'translateY(70px)';
+    }
+
+    $('.message-submit').click(function () {
+        senderMessage();
+    });
+
+    $(window).on('keydown', function (e) {
+        if (e.which == 13) {
+            senderMessage();
+            return false;
+        }
+    });
+
+    async function loadPrevious() {
+        var options = {
+            method: 'GET',
+            headers: {
+                "Content-Type": "application/json",
+            },
+        };
+        fetch(load + chat_id, options)
+            .then(async response => {
+                if (response.ok) {
+                    previousMessages = await response.json();
+                    console.log(previousMessages);
+                    console.log('Previous messages loaded');
+                } else {
+                    console.log(`Error loading previous messages: ${response.status}`);
+                    return false;
+                }
+            })
+            .catch(error => {
+                console.error('Error loading previous messages:', error);
+                return false;
+            });
+    }
+
+    function receiverMessage(msg, date = '') {
+        var image_url = document.getElementById('avatar-icon').src;
+        $('<div class="message loading new"><figure class="avatar"><img src=' + image_url + ' /></figure><span></span></div>').appendTo($('.mCSB_container'));
+        updateScrollbar();
+
+        if (date) {
+            date.toLocaleString("en-US", { timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone });
+        }
+
+        setTimeout(function () {
+            setDate(date);
+            $('.message.loading').remove();
+            $('<div class="message new"><figure class="avatar"><img src=' + image_url + ' /></figure>' + msg + '</div>').appendTo($('.mCSB_container')).addClass('new');
+            updateScrollbar();
+        }, 1000);
+    }
+</script>

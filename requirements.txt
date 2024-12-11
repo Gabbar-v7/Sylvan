@@ -1,0 +1,6 @@
+flask
+flask-cors
+flask-login
+sqlalchemy 
+psycopg2-binary     # Postgresql driver
+cryptography
