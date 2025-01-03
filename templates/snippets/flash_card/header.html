@@ -1,0 +1,109 @@
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" />
+<style>
+    #flash-container * {
+        padding: 0;
+        margin: 0;
+    }
+
+    #flash-card {
+        font-family: "Open Sans", sans-serif;
+        line-height: normal;
+        padding: 0;
+        margin: 0;
+        position: absolute;
+        /* To position overlay relative to body */
+        top: 0;
+    }
+
+    .flash-overlay {
+        position: fixed;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        /* To make sure the flash messages overlay other content */
+        padding: 10px;
+        width: auto;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    #flash-container .alert {
+        margin: 0;
+        margin-bottom: 20px;
+        /* Add space between flash cards */
+        padding: 10px 20px;
+        max-width: 80%;
+        width: 500px;
+        position: relative;
+        animation: slide-down 0.5s ease-out;
+        background-color: white;
+        border: solid black 2px;
+    }
+
+    #flash-container .rounded {
+        border-radius: 8px;
+    }
+
+    /* Slide-down effect */
+    @keyframes slide-down {
+        from {
+            opacity: 0;
+            transform: translateY(-20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    /* Rest of your styles for alerts, icons, etc. */
+    #flash-container .alert-dismissable {
+        padding-right: 35px;
+    }
+
+    #flash-container .close {
+        float: right;
+        font-size: 30px;
+        font-weight: bold;
+        line-height: 1;
+        color: #000;
+        background-color: transparent;
+        opacity: 0.5;
+        text-shadow: 0 1px 0 #fff;
+        border: none;
+    }
+
+    #flash-container .close:hover,
+    #flash-container .close:focus {
+        color: #000;
+        cursor: pointer;
+        opacity: 0.2;
+    }
+
+    #flash-container .alert .icon {
+        font-size: 20px;
+        vertical-align: middle;
+        margin-right: 5px;
+        text-align: center;
+        width: 25px;
+        display: inline-block;
+    }
+
+    #flash-container p {
+        margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+        #flash-container {
+            max-width: 100%;
+        }
+
+        #flash-container #flash-container .alert {
+            padding: 5%;
+            width: 350px;
+        }
+    }
+</style>

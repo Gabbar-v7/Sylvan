@@ -1,0 +1,29 @@
+<div id="flash-card">
+  <div id="flash-container" class="flash-overlay">
+    {% with messages = get_flashed_messages(with_categories=true) %} {% if
+    messages %} {% for category, message in messages %}
+    <div class="alert alert-{{ category }} alert-white rounded alert-dismissable">
+      <button type="button" class="close" data-dismiss="alert" aria-hidden="true">
+        ×
+      </button>
+      <div class="icon">
+        <!-- Use different icons for each category -->
+        {% if category == 'success' %}
+        <i class="fa fa-check"></i>
+        {% elif category == 'info' %}
+        <i class="fa fa-info-circle"></i>
+        {% elif category == 'message' %}
+        <i class="fa fa-comments-o" aria-hidden="true"></i>
+        {% elif category == 'error' %}
+        <i class="fa fa-warning"></i>
+        {% elif category == 'danger' %}
+        <i class="fa fa-times-circle"></i>
+        {% endif %}
+      </div>
+      <strong>{{ category|capitalize }}!</strong>
+      <p>{{ message }}</p>
+    </div>
+    {% endfor %} {% endif %} {% endwith %}
+  </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
