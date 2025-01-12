@@ -207,4 +207,12 @@ def fetch_user_info(oauth_client, platform):
             "first_name": user_info["localizedFirstName"],
             "last_name": user_info["localizedLastName"],
         }
+    elif platform == "facebook":
+        # Fetch user details using facebook
+        user_info = oauth_client.get("me?fields=id,email,first_name,last_name").json()
+        return {
+            "email": user_info.get("email", ""),
+            "first_name": user_info.get("first_name", ""),
+            "last_name": user_info.get("last_name", ""),
+        }
     raise ValueError(f"Unsupported platform: {platform}")

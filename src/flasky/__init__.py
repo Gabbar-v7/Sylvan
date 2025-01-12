@@ -57,5 +57,15 @@ def create_app():
         jwks_uri="https://www.googleapis.com/oauth2/v3/certs",  # Include the JWK URI
         client_kwargs={"scope": "openid email profile"},
     )
+    # Register Facebook OAuth in Flask
+    app.oauth.register(
+        name="facebook",
+        client_id=environ.get("FACEBOOK_CLIENT_ID"),
+        client_secret=environ.get("FACEBOOK_CLIENT_SECRET"),
+        access_token_url="https://graph.facebook.com/oauth/access_token",
+        authorize_url="https://www.facebook.com/dialog/oauth",
+        api_base_url="https://graph.facebook.com/v12.0/",
+        client_kwargs={"scope": "email public_profile"},
+    )
 
     return app

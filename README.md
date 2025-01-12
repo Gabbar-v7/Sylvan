@@ -67,8 +67,11 @@ To get started with **Sylvan**, follow the steps below to set up the environment
 
    # Visit: https://console.cloud.google.com/
    GOOGLE_CLIENT_ID = ""
-
    GOOGLE_CLIENT_SECRET = ""
+
+   # Visit: https://developers.facebook.com/
+   FACEBOOK_CLIENT_ID=""
+   FACEBOOK_CLIENT_SECRET=""
    ```
    
    #### `config.ini` (for general configurations):
