@@ -131,7 +131,8 @@ Root/
 ├── src/
 │   ├── dbModels/         # SQLAlchemy database models
 │   ├── flasky/           # Flask setup, including CORS, LoginManager, etc.
-│   └── security/         # Security utilities such as hashing and encryption
+│   ├── security/         # Security utilities such as hashing and encryption
+│   └── utils             # Extra utilities like setting up configurations
 │
 ├── scripts/              # Linux build scripts
 ├── settings/             # Optional: Configuration files (.env, config.ini)
@@ -173,7 +174,7 @@ Root/
 
 5. Create a Pull Request on GitHub.
 
-**Note:** Use the `temp/` directory for experimental work; it is ignored by Git.
+**Note:** Use the `temp/` directory for experimental work. it is ignored by Git.
 
 ---
 
