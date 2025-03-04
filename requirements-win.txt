@@ -1,0 +1,9 @@
+flask
+flask-cors
+flask-jwt-extended
+sqlalchemy 
+psycopg2
+cryptography
+python-dotenv
+Authlib
+requests
