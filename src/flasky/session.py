@@ -1,10 +1,9 @@
-from flask import Blueprint, current_app, jsonify, make_response, redirect, request, session, abort, url_for
+from flask import Blueprint, current_app, jsonify, make_response, redirect, request, session, url_for
 from sqlalchemy.exc import IntegrityError
 from src.dbModels import User, dbSession
 from src.security.oneway import generate_secure_hash
 from flask_jwt_extended import create_access_token, create_refresh_token, decode_token
 from .fetch.user import get_complete_user
-from src.utils.pre_loader import config
 
 # Create a Blueprint for session-related routes
 app_session = Blueprint("session", __name__, url_prefix="/session")

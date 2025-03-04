@@ -9,7 +9,8 @@ from authlib.integrations.flask_client import OAuth
 from os import environ
 from src.flasky.fetch.user import app_fetch
 import logging
-
+from os.path import join, abspath, dirname
+from src.flasky.errors import app_error
 
 class CustomLogger(logging.Logger):
     """Custom logger that automatically includes exc_info for all log levels based on a global flag."""
@@ -58,7 +59,13 @@ def create_app():
     Factory function to create and configure the Flask app.
     Sets up JWT, OAuth, and registers blueprints.
     """
-    app = Flask(__name__)
+
+    root_path = abspath(join(dirname(__file__), "../../"))
+    app = Flask(
+        __name__,
+        template_folder=join(root_path, "templates"),
+        static_folder=join(root_path, "static"),
+    )
     app.secret_key = environ.get("FLASK_SESSION_KEY")
     if not app.secret_key:
         raise ValueError("FLASK_SESSION_KEY environment variable is missing.")
@@ -91,6 +98,7 @@ def create_app():
     # Register Flask Blueprints
     app.register_blueprint(app_session)
     app.register_blueprint(app_fetch)
+    app.register_blueprint(app_error)
 
     # Configure OAuth
     app.oauth = OAuth(app)

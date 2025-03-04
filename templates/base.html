@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="author" content="Gabbar" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{% block title %} Sylvan {% endblock %}</title>
+  <!-- Icons -->
+  <link rel="shortcut icon" href="/static/images/icon.ico" type="image/x-icon" />
+  <link rel="icon" href="/static/images/icon.ico" type="image/x-icon" />
+  <!-- Font awesome icons & stuff -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+    crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@500&family=Kanit&display=swap"
+    rel="stylesheet" />
+  <style>
+    /* Nav Bar */
+    #base-header {
+      font-family: "Kanit", sans-serif;
+      border-radius: 20px;
+      position: relative;
+      padding: 0 2rem;
+    }
+
+    #base-header li {
+      list-style: none;
+
+      transition: scale 0.3s ease;
+    }
+
+    #base-header li:hover {
+      transform: scale(1.2);
+      color: white;
+    }
+
+    #base-header a {
+      text-decoration: none;
+      color: #fff;
+      font-size: 1rem;
+    }
+
+    #base-header .navbar {
+      width: 100%;
+      height: 60px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    #base-header .navbar .logo a {
+      font-size: 1.5rem;
+      font-weight: bold;
+    }
+
+    #base-header .navbar .logo {
+      transition: scale 0.3s ease;
+    }
+
+    #base-header .navbar .logo:hover {
+      transform: scale(1.05);
+      color: white;
+    }
+
+    #base-header .navbar .nav ul {
+      display: flex;
+      gap: 2rem;
+      align-items: center;
+      margin-left: auto;
+      margin-right: 0;
+    }
+
+    #base-header .navbar .menu {
+      color: #fff;
+      font-size: 1.5rem;
+      cursor: pointer;
+      display: none;
+    }
+
+    #base-header .navbar .highlight {
+      display: block;
+      margin: 0;
+    }
+
+    #base-header .highlight {
+      background-color: white;
+      color: black;
+      padding: 0.5rem 1rem;
+      border: none;
+      outline: none;
+      border-radius: 20px;
+      font-weight: bold;
+      cursor: pointer;
+      transition: scale 0.2s ease;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      margin: 0 auto;
+    }
+
+    #base-header .highlight:hover {
+      transform: scale(1.05);
+      color: black;
+    }
+
+    #base-header .nav-phone {
+      padding: 0px;
+    }
+
+    #base-header .highlight:active {
+      transform: scale(0.95);
+    }
+
+    #base-header .dropdown-menu {
+      left: 0;
+      right: 0;
+      position: absolute;
+      top: 60px;
+      height: 0;
+      width: 100%;
+      background: black;
+      backdrop-filter: blur(15px);
+      border-radius: 10px;
+      overflow: hidden;
+      display: none;
+      transition: 0.5s;
+    }
+
+    #base-header .dropdown-menu li {
+      padding: 0.7rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #base-header .dropdown-menu .highlight {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin: 0 10px;
+    }
+
+    #base-header .dropdown-menu.open {
+      height: 325px;
+      max-width: 100%;
+      margin-top: 10px;
+    }
+
+    #base-header .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 100vh;
+      background-color: transparent;
+    }
+
+    /* Nav Bar Ends */
+
+    /* Responsive */
+    @media (max-width: 992px) {
+      #base-header .navbar .nav ul {
+        display: none;
+      }
+
+      #base-header .navbar .menu {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+      }
+
+      #base-header .navbar .menu i {
+        display: inline-block;
+      }
+
+      #base-header .navbar .highlight {
+        display: none;
+      }
+
+      #base-header .dropdown-menu {
+        display: block;
+      }
+
+      #base-header .dropdown-menu .highlight {
+        display: block;
+        margin-top: 0.3rem 0 0.7rem 0;
+      }
+    }
+
+    .black {
+      color: black !important;
+    }
+
+    .black-bg {
+      background-color: black !important;
+    }
+
+    .white {
+      color: white !important;
+    }
+
+    .white-bg {
+      background-color: white !important;
+    }
+  </style>
+  <!-- snippets -->
+  {% include 'snippets/flash_card/header.html' %}
+
+  {% block head %} {% endblock %}
+</head>
+
+<body id="base-body">
+  {% include 'snippets/flash_card/widget.html' %}
+
+  <!-- Nav Bar -->
+  <header id="base-header" class="black-bg">
+    <div class="navbar">
+      <div class="logo">
+        <a href="/">Sylvan</a>
+      </div>
+      <div class="nav">
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Projects</a></li>
+          <li><a href="#">Skills</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="{{url_for('session.logout')}}">Logout</a></li>
+        </ul>
+        <div class="menu"><i class="fa-solid fa-bars"></i></div>
+      </div>
+      <a href="#" class="highlight">Some Action</a>
+      <div class="dropdown-menu">
+        <ul class="nav-phone">
+          <li><a href="#">About</a></li>
+          <li><a href="#">Projects</a></li>
+          <li><a href="#">Skills</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="{{url_for('session.logout')}}">Logout</a></li>
+          <li><a href="#" class="highlight">Some Action</a></li>
+        </ul>
+      </div>
+    </div>
+  </header>
+
+  <!-- Nav Bar Ends -->
+
+  {% block body %} {% endblock %}
+</body>
+{% include 'snippets/flash_card/script.html' %}
+
+<script>
+
+  // Nav Bar
+
+  const baseHeader = document.querySelector("#base-header");
+  const toggleBtn = baseHeader.querySelector(".menu");
+  const toggleBtnIcon = toggleBtn.querySelector("i");
+  const dropDownMenu = baseHeader.querySelector(".dropdown-menu");
+
+  toggleBtn.onclick = function () {
+    dropDownMenu.classList.toggle("open");
+    const isOpen = dropDownMenu.classList.contains("open");
+    toggleBtnIcon.classList.toggle("fa-bars", !isOpen);
+    toggleBtnIcon.classList.toggle("fa-xmark", isOpen);
+  };
+
+  // Nav Bar Ends
+
+</script>
+{% block script %} {% endblock %}
+
+</html>

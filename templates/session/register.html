@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="author" content="Gabbar" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Icons -->
+  <link rel="shortcut icon" href="/static/images/icon.ico" type="image/x-icon" />
+  <link rel="icon" href="/static/images/icon.ico" type="image/x-icon" />
+  <title>{% block title %} Sign Up | Sylvan {% endblock %}</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgba(17, 24, 39, 1);
+      overflow: clip;
+      height: 100vh;
+      padding: 10px;
+    }
+
+    .form-container {
+      width: 320px;
+      border-radius: 0.75rem;
+      padding: 5%;
+      color: rgba(243, 244, 246, 1);
+      border: 1px solid white;
+    }
+
+    .title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 700;
+    }
+
+    .form {
+      margin-top: 1.5rem;
+    }
+
+    .input-group {
+      margin-top: 0.5rem;
+      font-size: 1rem;
+    }
+
+    .input-group label {
+      display: block;
+      margin-bottom: 4px;
+    }
+
+    .input-group input {
+      width: 90%;
+      border-radius: 0.375rem;
+      border: 1px solid rgba(55, 65, 81, 1);
+      background-color: rgba(17, 24, 39, 1);
+      padding: 0.75rem 1rem;
+      color: rgba(243, 244, 246, 1);
+    }
+
+    .input-group input:focus {
+      border-color: rgba(167, 139, 250);
+    }
+
+    .sign {
+      display: block;
+      width: 100%;
+      background-color: rgba(167, 139, 250, 1);
+      margin-top: 20px;
+      padding: 0.75rem;
+      text-align: center;
+      color: rgba(17, 24, 39, 1);
+      border: none;
+      border-radius: 0.375rem;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .sign:hover {
+      color: black;
+      background-color: white;
+      border: 3px rgba(167, 139, 250, 1) solid;
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      body {
+        padding: 20px;
+      }
+
+      .form-container {
+        width: 90%;
+      }
+
+      .sign {
+        font-size: 1rem;
+      }
+    }
+  </style>
+  {% include 'snippets/flash_card/header.html' %}
+
+</head>
+
+<body>
+  {% include 'snippets/flash_card/widget.html' %}
+  <div class="form-container">
+    <p class="title">Create Account</p>
+    <form class="form" id="loginForm" action="{{url_for('session.register')}}" method="post">
+      <div class="input-group">
+        <label for="name">First Name</label>
+        <input type="text" name="firstName" id="name" placeholder="" required />
+      </div>
+      <div class="input-group">
+        <label for="name">Last Name</label>
+        <input type="text" name="lastName" id="name" placeholder="" required />
+      </div>
+      <div class="input-group">
+        <label for="phone">Phone</label>
+        <input type="tel" name="phone" id="phone" placeholder="" required />
+      </div>
+      <div class="input-group">
+        <label for="email">Email</label>
+        <input type="email" name="email" id="email" placeholder="" required />
+      </div>
+      <div class="input-group">
+        <label for="password">Password</label>
+        <input type="password" name="password" id="password" placeholder="" required />
+      </div>
+      <div class="input-group">
+        <label for="confirm">Confirm Password</label>
+        <input type="password" name="confirm" id="confirm" placeholder="" required />
+      </div>
+      <button type="submit" class="sign">Sign Up</button>
+    </form>
+  </div>
+
+  {% include 'snippets/flash_card/script.html' %}
+
+  <script>
+
+    const form = document.getElementById("loginForm");
+    const phoneInput = document.getElementById("phone");
+    const emailInput = document.getElementById("email");
+    const passwordInput = document.getElementById("password");
+    const confirmInput = document.getElementById("confirm");
+
+    // Function to validate form inputs
+    function validateForm() {
+      // Check for empty fields
+      if (!form.checkValidity()) {
+        return false;
+      }
+
+      // Check phone number length
+      if (phoneInput.value.length !== 10) {
+        alert("Phone number must be exactly 10 digits long.");
+        phoneInput.focus();
+        return false;
+      }
+
+      // Validate email format
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(emailInput.value)) {
+        alert("Please enter a valid email address.");
+        emailInput.focus();
+        return false;
+      }
+
+      // Check if password and confirm password match
+      if (passwordInput.value !== confirmInput.value) {
+        alert("Passwords do not match.");
+        confirmInput.focus();
+        return false;
+      }
+
+      return true; // All validations passed
+    }
+
+    // Handle form submission
+    form.addEventListener("submit", function (event) {
+      if (!validateForm()) {
+        event.preventDefault(); // Prevent form submission if validation fails
+      }
+    });
+
+    // Focus on the next input when Enter is pressed
+    form.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        event.preventDefault(); // Prevent form submission on Enter key
+        const inputs = Array.from(form.elements);
+        const currentIndex = inputs.indexOf(document.activeElement);
+        if (currentIndex >= 0 && currentIndex < inputs.length - 1) {
+          inputs[currentIndex + 1].focus(); // Focus next input
+        } else if (currentIndex === inputs.length - 1) {
+          if (validateForm()) {
+            form.submit(); // Submit the form if all validations pass
+          }
+        }
+      }
+    });
+  </script>
+</body>
+
+</html>
