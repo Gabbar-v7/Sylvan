@@ -1,14 +1,12 @@
 # Sylvan-Backend
 
-A Flask-based web API utilizing SQLAlchemy for database management and Flask-Login for user authentication.
+A Flask-based web API utilizing SQLAlchemy for database management and JWT Tokens for user authentication.
 
 ## Features
 
 - **User Authentication:** Login and logout functionality.
 - **Database Integration:** SQLAlchemy ORM for seamless database interactions.
 - **Secure Application:** CSRF protection, session management, and encryption.
-
----
 
 ## Getting Started
 
@@ -48,8 +46,16 @@ A Flask-based web API utilizing SQLAlchemy for database management and Flask-Log
 
 4. Install dependencies:
 
+   - **Windows:**
+
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements-win.txt
+   ```
+
+   - **Mac/Linux:**
+
+   ```bash
+   pip install -r requirements-linux.txt
    ```
 
 5. Set up configuration files:
