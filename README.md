@@ -13,9 +13,9 @@ A Flask-based web API utilizing SQLAlchemy for database management and JWT Token
 ### Prerequisites
 
 - Recommended Python version: **3.12.8**
-- Docker with PostgreSQL image:
+- Podman with PostgreSQL image:
   ```bash
-  docker pull postgres
+  podman pull postgres
   ```
 
 ### Installation
@@ -97,10 +97,10 @@ A Flask-based web API utilizing SQLAlchemy for database management and JWT Token
    pool_timeout = 30
    ```
 
-6. Run PostgreSQL via Docker:
+6. Run PostgreSQL via Podman:
 
    ```bash
-   docker run -d \
+   podman run -d \
      --name sylvan \
      -e POSTGRES_USER={dbUserName} \
      -e POSTGRES_PASSWORD={dbPassword} \
@@ -135,19 +135,22 @@ A Flask-based web API utilizing SQLAlchemy for database management and JWT Token
 ```
 Root/
 ├── src/
-│   ├── dbModels/         # SQLAlchemy database models
-│   ├── flasky/           # Flask setup, including CORS, LoginManager, etc.
-│   ├── security/         # Security utilities such as hashing and encryption
-│   └── utils             # Extra utilities like setting up configurations
-│
-├── scripts/              # Linux build scripts
-├── settings/             # Optional: Configuration files (.env, config.ini)
-├── temp/                 # Temporary workspace (ignored by git)
-├── .gitignore            # Git ignore file
-├── README.md             # Project documentation
-├── LICENSE               # License information
-├── main.py               # Main entry point for the application
-└── requirements.txt      # Dependency list
+│   ├── dbModels/
+│   ├── flasky/
+│   ├── security/
+│   └── utils/
+├── scripts/
+├── settings/
+├── temp/
+├── podman/                # Folder for all Podman-related files
+│   ├── Containerfile      # Container configuration file
+│   ├── podman-compose.yml # Podman Compose file
+│   └── podman-config/     # Additional Podman configs
+├── .gitignore
+├── README.md
+├── LICENSE
+├── main.py
+└── requirements.txt
 ```
 
 ---

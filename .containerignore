@@ -1,3 +1,9 @@
+# Version controls
+.git/
+.github/
+
+
+
 # Python bytecode files
 __pycache__/
 *.pyc
