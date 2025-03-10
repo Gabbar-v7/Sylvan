@@ -123,6 +123,39 @@ A Flask-based web API utilizing SQLAlchemy for database management and JWT Token
 
 ---
 
+## Containerizing the Project with Podman
+
+To containerize the project using Podman, follow these steps:
+
+1. **Build the Container Image:**
+   Navigate to the root directory of the project and run:
+
+   ```bash
+   podman build -t sylvan-backend .
+   ```
+
+2. **Verify the Container Files:**
+   To check the files inside the container, run:
+
+   ```bash
+   podman run --rm sylvan-backend ls -la /app
+   ```
+
+3. **Run the Application in the Container:**
+   Start the container and run the application:
+
+   ```bash
+   podman run -d --name sylvan-backend -p 5000:5000 sylvan-backend
+   ```
+
+4. **Access the Application:**
+   Open your browser and navigate to:
+   ```
+   http://127.0.0.1:5000
+   ```
+
+---
+
 ## Usage
 
 - Login with your credentials or register as a new user (if registration is implemented).
@@ -142,10 +175,8 @@ Root/
 ├── scripts/
 ├── settings/
 ├── temp/
-├── podman/                # Folder for all Podman-related files
-│   ├── Containerfile      # Container configuration file
-│   ├── podman-compose.yml # Podman Compose file
-│   └── podman-config/     # Additional Podman configs
+├── Containerfile
+├── podman-compose.yml.bak
 ├── .gitignore
 ├── README.md
 ├── LICENSE
