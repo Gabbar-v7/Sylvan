@@ -2,8 +2,6 @@
 .git/
 .github/
 
-
-
 # Python bytecode files
 __pycache__/
 *.pyc
@@ -74,3 +72,6 @@ desktop.ini
 # Automation
 makefile
 Makefile
+
+# Allowed to container
+!container.ini

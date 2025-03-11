@@ -1,39 +1,41 @@
-# Sylvan-Backend
+# Sylvan Backend
 
-A Flask-based web API utilizing SQLAlchemy for database management and JWT Tokens for user authentication.
+A **Flask-based web API** utilizing **SQLAlchemy** for database management and **JWT Tokens** for user authentication.
 
 ## Features
 
-- **User Authentication:** Login and logout functionality.
-- **Database Integration:** SQLAlchemy ORM for seamless database interactions.
-- **Secure Application:** CSRF protection, session management, and encryption.
+- **User Authentication:** Secure login/logout functionality.
+- **Database Integration:** SQLAlchemy ORM for seamless interactions.
+- **Security Measures:** CSRF protection, session management, and encryption.
+
+---
 
 ## Getting Started
 
 ### Prerequisites
 
-- Recommended Python version: **3.12.8**
+- Python **3.12.8** (recommended)
 - Podman with PostgreSQL image:
   ```bash
-  podman pull postgres
+  podman pull docker.io/postgres
   ```
 
 ### Installation
 
-1. Clone the repository:
+1. **Clone the Repository:**
 
    ```bash
    git clone https://github.com/Gabbar-v7/Sylvan.git
    cd Sylvan
    ```
 
-2. Create a virtual environment:
+2. **Create a Virtual Environment:**
 
    ```bash
    python -m venv env
    ```
 
-3. Activate the virtual environment:
+3. **Activate the Virtual Environment:**
 
    - **Windows:**
      ```bash
@@ -44,122 +46,67 @@ A Flask-based web API utilizing SQLAlchemy for database management and JWT Token
      source env/bin/activate
      ```
 
-4. Install dependencies:
-
-   - **Windows:**
+4. **Install Dependencies:**
 
    ```bash
-   pip install -r requirements-win.txt
+   pip install -r requirements.txt
    ```
 
-   - **Mac/Linux:**
+5. **Set Up Configuration Files:**
 
-   ```bash
-   pip install -r requirements-linux.txt
-   ```
+   - **[`env.development`](docs/env-config.md)** – Contains sensitive information such as API keys and database credentials.
+   - **[`config.ini`](docs/ini-config.md)** – Stores general configuration settings.
 
-5. Set up configuration files:
-
-   #### `env.development` (for sensitive environment variables):
-
-   This file should only contain sensitive information such as API keys, database credentials, and encryption keys.
-
-   ```plaintext
-   SQLALCHEMY_DATABASE_URI="postgresql://{dbUserName}:{dbPassword}@localhost:5432/{dbDataSet}"
-
-   FLASK_SESSION_KEY="your_secure_session_key"
-
-   HASH_KEY="your_secret_hash_key"
-
-   FERNET_KEY=b"bwN8yS9PbEx1yEDCQQ8R2qfioZFR2vKEtDuRslWjJUU="  # Fernet key must be 32 URL-safe base64-encoded bytes.
-
-   # Visit: https://console.cloud.google.com/
-   GOOGLE_CLIENT_ID = ""
-   GOOGLE_CLIENT_SECRET = ""
-
-   # Visit: https://developers.facebook.com/
-   FACEBOOK_CLIENT_ID=""
-   FACEBOOK_CLIENT_SECRET=""
-   ```
-
-   #### `config.ini` (for general configurations):
-
-   This file contains references to other configuration files or general settings.
-
-   ```plaintext
-   [application]
-   env_file=env.development
-   enable_traceback=true
-
-   [database]
-   echo=false
-   max_overflow = 10
-   pool_timeout = 30
-   ```
-
-6. Run PostgreSQL via Podman:
+6. **Run PostgreSQL via Podman:**
 
    ```bash
    podman run -d \
-     --name sylvan \
-     -e POSTGRES_USER={dbUserName} \
-     -e POSTGRES_PASSWORD={dbPassword} \
-     -e POSTGRES_DB={dbDataSet} \
-     -v {absolute_path}:/var/lib/postgresql/data \
+     --name sylvan-db \
+     -e POSTGRES_USER=username \
+     -e POSTGRES_PASSWORD=password \
+     -e POSTGRES_DB=database_name \
+     -v /absolute/path:/var/lib/postgresql/data \
      -p 5432:5432 \
      postgres
    ```
 
-7. Start the application:
+7. **Start the Application:**
 
    ```bash
    python main.py
    ```
 
-8. Open your browser and navigate to:
-   ```
-   http://127.0.0.1:5000
-   ```
+8. **Access the API:**
+   - Open your browser and visit: `http://127.0.0.1:5000`
 
 ---
 
-## Containerizing the Project with Podman
+## Podman Configuration
 
-To containerize the project using Podman, follow these steps:
+To containerize the project using **Podman**, follow these steps:
 
 1. **Build the Container Image:**
-   Navigate to the root directory of the project and run:
 
    ```bash
    podman build -t sylvan-backend .
    ```
 
-2. **Verify the Container Files:**
-   To check the files inside the container, run:
-
-   ```bash
-   podman run --rm sylvan-backend ls -la /app
-   ```
-
-3. **Run the Application in the Container:**
-   Start the container and run the application:
+2. **Run the Application in a Container:**
 
    ```bash
    podman run -d --name sylvan-backend -p 5000:5000 sylvan-backend
    ```
 
+3. **Verify Running Containers:**
+
+   ```bash
+   podman ps
+   ```
+
 4. **Access the Application:**
-   Open your browser and navigate to:
-   ```
-   http://127.0.0.1:5000
-   ```
+   - Visit `http://127.0.0.1:5000`
 
----
-
-## Usage
-
-- Login with your credentials or register as a new user (if registration is implemented).
-- Interact with application features such as managing resources and viewing content.
+For detailed **Podman setup**, refer to **[`docs/podman-setup.md`](docs/podman-setup.md)**.
 
 ---
 
@@ -175,46 +122,48 @@ Root/
 ├── scripts/
 ├── settings/
 ├── temp/
+├── docs/
+│   ├── env-config.md
+│   ├── config-ini.md
+│   ├── podman-setup.md
 ├── Containerfile
-├── podman-compose.yml.bak
+├── .containerignore
 ├── .gitignore
 ├── README.md
 ├── LICENSE
 ├── main.py
-└── requirements.txt
+├── requirements.txt
 ```
 
 ---
 
 ## Contributing
 
-1. Fork the repository:
+1. **Fork the Repository:**
 
    ```bash
    git fork https://github.com/Gabbar-v7/Sylvan.git
    ```
 
-2. Create a feature branch:
+2. **Create a Feature Branch:**
 
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-3. Commit your changes:
+3. **Commit Your Changes:**
 
    ```bash
    git commit -m "Your concise commit message"
    ```
 
-4. Push your branch:
+4. **Push the Branch:**
 
    ```bash
    git push origin feature/your-feature-name
    ```
 
-5. Create a Pull Request on GitHub.
-
-**Note:** Use the `temp/` directory for experimental work. it is ignored by Git.
+5. **Submit a Pull Request on GitHub.**
 
 ---
 
@@ -224,6 +173,6 @@ This project is licensed under the [MIT License](LICENSE).
 
 ---
 
-### Additional Notes
+## Additional Notes
 
-For any issues or feature requests, create a new [issue](https://github.com/Gabbar-v7/Sylvan/issues) in the repository.
+For issues or feature requests, open a new [GitHub Issue](https://github.com/Gabbar-v7/Sylvan/issues).
