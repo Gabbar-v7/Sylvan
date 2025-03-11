@@ -104,9 +104,9 @@ To containerize the project using **Podman**, follow these steps:
    ```
 
 4. **Access the Application:**
-   - Visit `http://127.0.0.1:5000`
+   - Visit [`http://127.0.0.1:5000`](http://127.0.0.1:5000)
 
-For detailed **Podman setup**, refer to **[`docs/podman-setup.md`](docs/podman-setup.md)**.
+For detailed **Podman setup**, refer to **[`Podman Setup`](docs/podman-setup.md)**.
 
 ---
 

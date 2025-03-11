@@ -12,7 +12,7 @@ env_file = env.development
 enable_traceback = true
 
 [database]
-echo=false
+echo = false
 max_overflow = 10
 pool_timeout = 30
 ```
