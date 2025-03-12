@@ -86,6 +86,7 @@ A **Flask-based web API** utilizing **SQLAlchemy** for database management and *
 To containerize the project using **Podman**, follow these steps:
 
 1. **Build the Container Image:**
+   Create a container specific configuration `container.ini`. Refer [docs/config.ini](docs/ini-config.md)
 
    ```bash
    podman build -t sylvan-backend .
@@ -94,7 +95,7 @@ To containerize the project using **Podman**, follow these steps:
 2. **Run the Application in a Container:**
 
    ```bash
-   podman run -d --name sylvan-backend -p 5000:5000 sylvan-backend
+   podman run  -p 5000:5000 --env-file env.development sylvan-backend:latest
    ```
 
 3. **Verify Running Containers:**
@@ -123,16 +124,13 @@ Root/
 ├── settings/
 ├── temp/
 ├── docs/
-│   ├── env-config.md
-│   ├── config-ini.md
-│   ├── podman-setup.md
 ├── Containerfile
 ├── .containerignore
 ├── .gitignore
 ├── README.md
 ├── LICENSE
 ├── main.py
-├── requirements.txt
+└── requirements.txt
 ```
 
 ---
@@ -175,4 +173,4 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Additional Notes
 
-For issues or feature requests, open a new [GitHub Issue](https://github.com/Gabbar-v7/Sylvan/issues).
+For issues or feature requests, open a new [Issue](https://github.com/Gabbar-v7/Sylvan/issues).

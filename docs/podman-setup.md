@@ -38,6 +38,7 @@ podman run -d \
 ## Building and Running the Backend with Podman
 
 1. **Build the Container Image:**
+   Create a container specific configuration `container.ini`. Refer [docs/config.ini](ini-config.md)
 
    ```bash
    podman build -t sylvan-backend .
@@ -46,7 +47,7 @@ podman run -d \
 2. **Run the Application:**
 
    ```bash
-   podman run -d --name sylvan-backend -p 5000:5000 sylvan-backend
+   podman run  -p 5000:5000 --env-file env.development sylvan-backend:latest
    ```
 
 3. **Verify Running Containers:**
