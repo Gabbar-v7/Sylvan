@@ -7,3 +7,6 @@ cryptography
 python-dotenv
 Authlib
 requests
+prometheus-flask-exporter
+Flask-Limiter[redis]
+valkey[libvalkey]

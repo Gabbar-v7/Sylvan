@@ -11,14 +11,17 @@ from src.flasky.fetch.user import app_fetch
 import logging
 from os.path import join, abspath, dirname
 from src.flasky.errors import app_error
+from prometheus_flask_exporter import PrometheusMetrics
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
+
 
 class CustomLogger(logging.Logger):
     """Custom logger that automatically includes exc_info for all log levels based on a global flag."""
 
     def __init__(self, name, level=logging.NOTSET):
         super().__init__(name, level)
-        self.enable_traceback = config.getboolean(
-            'application', 'enable_traceback')
+        self.enable_traceback = config.getboolean("application", "enable_traceback")
 
     def _log_with_exc_info(self, level, msg, args, exc_info, **kwargs):
         """Helper method to add exc_info automatically if not explicitly set."""
@@ -39,8 +42,7 @@ class CustomLogger(logging.Logger):
         self._log_with_exc_info(logging.ERROR, msg, args, exc_info, **kwargs)
 
     def critical(self, msg, *args, exc_info=None, **kwargs):
-        self._log_with_exc_info(logging.CRITICAL, msg,
-                                args, exc_info, **kwargs)
+        self._log_with_exc_info(logging.CRITICAL, msg, args, exc_info, **kwargs)
 
 
 # Register the custom logger
@@ -50,7 +52,8 @@ logger = logging.getLogger(__name__)
 logging.basicConfig(
     level=logging.NOTSET,
     # Format only up to seconds
-    format="%(asctime)s - %(levelname)s - %(message)s", datefmt="%Y-%m-%d %H:%M:%S"
+    format="%(asctime)s - %(levelname)s - %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
 )
 
 
@@ -89,8 +92,7 @@ def create_app():
         """Fetch the user from the database based on the JWT identity."""
         identity = jwt_data["sub"]
         with dbSession() as dbsession:
-            user = dbsession.query(User).filter(
-                User.id == identity).one_or_none()
+            user = dbsession.query(User).filter(User.id == identity).one_or_none()
             if not user:
                 return None
         return user
@@ -99,6 +101,17 @@ def create_app():
     app.register_blueprint(app_session)
     app.register_blueprint(app_fetch)
     app.register_blueprint(app_error)
+
+    # Enable PrometheusMetrics for Montoring
+    metrics = PrometheusMetrics(app)
+
+    # Flask Rate Limiter
+    limiter = Limiter(
+        get_remote_address,
+        app=app,
+        default_limits=["200000/day", "20/minute"],
+        storage_uri=environ.get("LIMITER_DATABASE_URI"),
+    )
 
     # Configure OAuth
     app.oauth = OAuth(app)
@@ -125,5 +138,6 @@ def create_app():
         api_base_url="https://graph.facebook.com/v12.0/",
         client_kwargs={"scope": "email public_profile"},
     )
+    print(metrics.app)  # Should print <Flask 'your_app'>
 
     return app
