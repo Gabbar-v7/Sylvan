@@ -1,19 +1,16 @@
+from prometheus_client import CONTENT_TYPE_LATEST, generate_latest
 from src.dbModels import dbSession, User
 from src.utils.pre_loader import config
 from src.flasky.session import app_session
 from datetime import timedelta
-from flask import Flask
-from flask_jwt_extended import JWTManager
+from flask import Flask, request, abort
 from flask_cors import CORS
-from authlib.integrations.flask_client import OAuth
 from os import environ
 from src.flasky.fetch.user import app_fetch
 import logging
-from os.path import join, abspath, dirname
+from os.path import join
 from src.flasky.errors import app_error
-from prometheus_flask_exporter import PrometheusMetrics
-from flask_limiter import Limiter
-from flask_limiter.util import get_remote_address
+from .utils import root_path, metrics, jwt, oauth, limiter
 
 
 class CustomLogger(logging.Logger):
@@ -63,12 +60,27 @@ def create_app():
     Sets up JWT, OAuth, and registers blueprints.
     """
 
-    root_path = abspath(join(dirname(__file__), "../../"))
     app = Flask(
         __name__,
         template_folder=join(root_path, "templates"),
         static_folder=join(root_path, "static"),
     )
+
+    # Flask Rate Limiter
+    limiter.init_app(app)
+
+    # Enable PrometheusMetrics for Montoring
+    metrics.init_app(app)
+
+    @app.route("/metrics")
+    @limiter.exempt
+    def metrics():
+        auth_token = request.headers.get("Authorization")
+        if auth_token == f"Bearer {environ.get('PROMETHEUS_TOKEN')}":
+            return generate_latest(), 200, {"Content-Type": CONTENT_TYPE_LATEST}
+        else:
+            abort(403, "Forbidden")
+
     app.secret_key = environ.get("FLASK_SESSION_KEY")
     if not app.secret_key:
         raise ValueError("FLASK_SESSION_KEY environment variable is missing.")
@@ -80,7 +92,7 @@ def create_app():
     app.config["JWT_SECRET_KEY"] = app.secret_key
     app.config["JWT_ACCESS_TOKEN_EXPIRES"] = timedelta(hours=1)
     app.config["JWT_REFRESH_TOKEN_EXPIRES"] = timedelta(days=30)
-    jwt = JWTManager(app)
+    jwt.init_app(app)
 
     @jwt.user_identity_loader
     def user_identity_lookup(identity):
@@ -102,22 +114,11 @@ def create_app():
     app.register_blueprint(app_fetch)
     app.register_blueprint(app_error)
 
-    # Enable PrometheusMetrics for Montoring
-    metrics = PrometheusMetrics(app)
-
-    # Flask Rate Limiter
-    limiter = Limiter(
-        get_remote_address,
-        app=app,
-        default_limits=["200000/day", "20/minute"],
-        storage_uri=environ.get("LIMITER_DATABASE_URI"),
-    )
-
     # Configure OAuth
-    app.oauth = OAuth(app)
+    oauth.init_app(app)
 
     # Register Google OAuth
-    app.oauth.register(
+    oauth.register(
         name="google",
         client_id=environ.get("GOOGLE_CLIENT_ID"),
         client_secret=environ.get("GOOGLE_CLIENT_SECRET"),
@@ -129,7 +130,7 @@ def create_app():
     )
 
     # Register Facebook OAuth
-    app.oauth.register(
+    oauth.register(
         name="facebook",
         client_id=environ.get("FACEBOOK_CLIENT_ID"),
         client_secret=environ.get("FACEBOOK_CLIENT_SECRET"),
@@ -138,6 +139,5 @@ def create_app():
         api_base_url="https://graph.facebook.com/v12.0/",
         client_kwargs={"scope": "email public_profile"},
     )
-    print(metrics.app)  # Should print <Flask 'your_app'>
 
     return app
