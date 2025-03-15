@@ -74,7 +74,7 @@ def create_app():
 
     @app.route("/metrics")
     @limiter.exempt
-    def metrics():
+    def secure_prometheus_metrics():
         auth_token = request.headers.get("Authorization")
         if auth_token == f"Bearer {environ.get('PROMETHEUS_TOKEN')}":
             return generate_latest(), 200, {"Content-Type": CONTENT_TYPE_LATEST}
