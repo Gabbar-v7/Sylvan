@@ -8,7 +8,7 @@ Create a file named `env.development` in the project root and add the following 
 
 ```ini
 # Database
-SQLALCHEMY_DATABASE_URI = postgresql://{dbUserName}:{dbPassword}@localhost:5432/{dbDataSet}
+SQLALCHEMY_DATABASE_URI = postgresql://{dbUserName}:{dbPassword}@localhost:5432/{dbDataSet}  # Optional: sqlite:///database.sqlite
 
 #Flask
 FLASK_SESSION_KEY = your_secure_session_key
