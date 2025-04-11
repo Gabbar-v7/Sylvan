@@ -81,11 +81,8 @@ def register():
     if not all([first_name, last_name, email, password]):
         return jsonify({"msg": "Missing required fields"}), 400
 
-    # Hash the password before storing
-    password_hash = generate_secure_hash(password)
-
     try:
-        user = User(first_name, last_name, "patient", email, phone, password_hash)
+        user = User(first_name, last_name, "patient", email, phone, password)
         with dbSession() as dbsession:
             dbsession.add(user)
             dbsession.commit()
