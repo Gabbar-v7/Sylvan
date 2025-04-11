@@ -6,7 +6,7 @@ This file contains the required environment variables for running the **Sylvan B
 
 Create a file named `env.development` in the project root and add the following variables:
 
-```ini
+```text
 # Database
 SQLALCHEMY_DATABASE_URI = postgresql://{dbUserName}:{dbPassword}@localhost:5432/{dbDataSet}  # Optional: sqlite:///database.sqlite
 

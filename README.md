@@ -47,9 +47,15 @@ A **Flask-based web API** utilizing **SQLAlchemy** for database management and *
      ```
 
 4. **Install Dependencies:**
-
+   
+   - **Windows:**
    ```bash
-   pip install -r requirements.txt
+   pip install -r requirements-win.txt
+   ```
+
+   - **Mac/Linux:**
+   ```bash
+   pip install -r requirements-linux.txt
    ```
 
 5. **Set Up Configuration Files:**
